@@ -26,6 +26,10 @@ class MyAppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
-    return MaterialApp();
+    return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Montserrat',
+      ),
+    );
   }
 }
