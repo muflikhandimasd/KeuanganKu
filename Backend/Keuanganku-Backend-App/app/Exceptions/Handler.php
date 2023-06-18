@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Throwable;
 use Illuminate\Http\Request;
 use App\Common\CommonFormatter;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -28,6 +29,12 @@ class Handler extends ExceptionHandler
         $this->renderable(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, Request $request) {
             if ($request->is('api/*')) {
                 return CommonFormatter::fail(403, 'You dont have permission to access this');
+            }
+
+        });
+        $this->renderable(function (RouteNotFoundException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return CommonFormatter::fail(401, 'Please Login First');
             }
 
         });
