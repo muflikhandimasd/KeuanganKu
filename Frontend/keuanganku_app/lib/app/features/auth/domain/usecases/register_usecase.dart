@@ -18,7 +18,6 @@ class RegisterUseCase extends UseCase<bool, RegisterUseCaseParams> {
 
 class RegisterUseCaseParams extends Equatable {
   final String email;
-
   final String name;
   final String phone;
   final String address;
@@ -28,6 +27,16 @@ class RegisterUseCaseParams extends Equatable {
       required this.name,
       required this.phone,
       required this.address});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'email': email,
+      'name': name,
+      'phone': phone,
+      'address': address,
+    };
+  }
+
   @override
   List<Object?> get props => [email, name, phone, address];
 }

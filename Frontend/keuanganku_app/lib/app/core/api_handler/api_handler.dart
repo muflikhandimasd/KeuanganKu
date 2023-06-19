@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:keuanganku_app/app/core/constants/constant_key.dart';
 
 import '../config/api_config.dart';
 import '../secure_storage/secure_storage.dart';
@@ -118,11 +119,10 @@ class ApiHandler {
   }
 
   Future<void> init() async {
-    _token = await _storage.read(key: 'token');
+    _token = await _storage.read(key: ConstantKey.keyToken);
   }
 
   Future<void> deleteToken() async {
     _token = null;
-    await _storage.delete(key: 'token');
   }
 }

@@ -11,3 +11,9 @@ class CacheFailure extends Failure {
 
   CacheFailure({this.message = 'Cache Error'});
 }
+
+class NoInternetFailure extends Failure {
+  final String message;
+
+  NoInternetFailure({this.message = 'No Internet Connection'});
+}

@@ -31,28 +31,45 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on DioException catch (e) {
       throw ServerException(
           message: e.response?.data['message'] ?? 'Server Error');
-    } on CacheException catch (e) {
-      throw CacheException(message: e.message);
-    } catch (e) {
-      throw Exception(e);
     }
   }
 
   @override
-  Future<bool> logout(NoParams params) {
-    // TODO: implement logout
-    throw UnimplementedError();
+  Future<bool> logout(NoParams params) async {
+    try {
+      final response = await apiHandler.post(ApiConfig.LOGOUT);
+      final status = response.data['status'];
+      if (status) {
+        await apiHandler.deleteToken();
+      }
+      return status;
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.response?.data['message'] ?? 'Server Error');
+    }
   }
 
   @override
-  Future<bool> register(RegisterUseCaseParams params) {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<bool> register(RegisterUseCaseParams params) async {
+    try {
+      final response =
+          await apiHandler.post(ApiConfig.REGISTER, data: params.toJson());
+      return response.data['status'];
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.response?.data['message'] ?? 'Server Error');
+    }
   }
 
   @override
-  Future<bool> sendOtp(SendOtpUseCaseParams params) {
-    // TODO: implement sendOtp
-    throw UnimplementedError();
+  Future<bool> sendOtp(SendOtpUseCaseParams params) async {
+    try {
+      final response =
+          await apiHandler.post(ApiConfig.SEND_OTP, data: params.toJson());
+      return response.data['status'];
+    } on DioException catch (e) {
+      throw ServerException(
+          message: e.response?.data['message'] ?? 'Server Error');
+    }
   }
 }

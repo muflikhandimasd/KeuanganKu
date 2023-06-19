@@ -6,7 +6,7 @@ class SecureStorage {
 
   SecureStorage(this._flutterSecureStorage);
 
-  Future<void> write({String key = '', String value = ''}) async {
+  Future<void> write({required String key, required String value}) async {
     try {
       await _flutterSecureStorage.write(key: key, value: value);
     } catch (e) {
@@ -14,7 +14,7 @@ class SecureStorage {
     }
   }
 
-  Future<String?> read({String key = ''}) async {
+  Future<String?> read({required String key}) async {
     try {
       return await _flutterSecureStorage.read(key: key);
     } catch (e) {
@@ -22,7 +22,7 @@ class SecureStorage {
     }
   }
 
-  Future<void> delete({String key = ''}) async {
+  Future<void> delete({required String key}) async {
     try {
       await _flutterSecureStorage.delete(key: key);
     } catch (e) {
