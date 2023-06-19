@@ -57,11 +57,14 @@ class AuthController extends Controller
         # Generate An OTP
         $verificationCode = $this->generateOtp($request->email);
 
-        $message = "Your OTP To Login is - " . $verificationCode->otp;
-        # Return With OTP 
-        Mail::to($request->email)->send(new OtpMail($verificationCode->otp));
 
-        return CommonFormatter::success('Success Send OTP, Please Check Your Email', $message);
+        # Return With OTP 
+        $mailSend = Mail::to($request->email)->send(new OtpMail($verificationCode->otp));
+        if ($mailSend == null) {
+            return CommonFormatter::fail(400, 'Failed Send OTP');
+        }
+
+        return CommonFormatter::success('Success Send OTP, Please Check Your Email', null);
     }
 
     private function generateOtp($email)
@@ -89,8 +92,6 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-
-
         $validator = Validator::make(request()->all(), [
             'email' => 'required|email|exists:users,email',
             'otp' => 'required|numeric'

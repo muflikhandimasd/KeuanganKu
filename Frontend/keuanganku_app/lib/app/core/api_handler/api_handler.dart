@@ -2,16 +2,24 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../config/api_config.dart';
+import '../secure_storage/secure_storage.dart';
 
 class ApiHandler {
   final Dio _dio;
   String? _token;
-  final FlutterSecureStorage _storage;
+  final SecureStorage _storage;
 
   String? get token => _token;
 
   ApiHandler(this._dio, this._storage) {
+    _dio.options.baseUrl = ApiConfig.BASE_URL;
+    _dio.options.connectTimeout = const Duration(milliseconds: 5000);
+    _dio.options.receiveTimeout = const Duration(milliseconds: 3000);
+    _dio.options.headers['Content-Type'] = 'application/json';
+    _dio.options.headers['Accept'] = 'application/json';
+
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         if (_token != null) {
@@ -111,5 +119,10 @@ class ApiHandler {
 
   Future<void> init() async {
     _token = await _storage.read(key: 'token');
+  }
+
+  Future<void> deleteToken() async {
+    _token = null;
+    await _storage.delete(key: 'token');
   }
 }
