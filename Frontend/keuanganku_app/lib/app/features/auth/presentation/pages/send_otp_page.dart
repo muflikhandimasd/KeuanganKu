@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keuanganku_app/app/features/auth/presentation/cubit/auth_cubit.dart';
@@ -26,7 +27,9 @@ class SendOtpPage extends StatelessWidget {
                   hintText: 'Email',
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (value) {
-                    print(value);
+                    if (kDebugMode) {
+                      print(value);
+                    }
                   },
                 ),
                 const SizedBox(

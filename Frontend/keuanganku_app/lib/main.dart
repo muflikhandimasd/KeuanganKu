@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:keuanganku_app/app/features/auth/presentation/pages/register_page.dart';
 import 'package:keuanganku_app/app/features/auth/presentation/pages/send_otp_page.dart';
 import './service_locator.dart' as di;
 import 'app/features/auth/presentation/cubit/auth_cubit.dart';

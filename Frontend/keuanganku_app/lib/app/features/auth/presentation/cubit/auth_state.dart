@@ -10,6 +10,7 @@ class AuthState extends Equatable {
   final RegisterForm registerForm;
   final SendOTPForm sendOTPForm;
   final int countDownSeconds;
+  final String emailOtp;
 
   bool get isAuthenticated => authStatus == AuthStatus.authenticated;
 
@@ -21,6 +22,7 @@ class AuthState extends Equatable {
     this.registerForm = const RegisterForm(),
     this.sendOTPForm = const SendOTPForm(),
     this.countDownSeconds = 60,
+    this.emailOtp = '',
   });
 
   AuthState copyWith({
@@ -31,6 +33,7 @@ class AuthState extends Equatable {
     RegisterForm? registerForm,
     SendOTPForm? sendOTPForm,
     int? countDownSeconds,
+    String? emailOtp,
   }) {
     return AuthState(
       authStatus: authStatus ?? this.authStatus,
@@ -40,6 +43,7 @@ class AuthState extends Equatable {
       registerForm: registerForm ?? this.registerForm,
       sendOTPForm: sendOTPForm ?? this.sendOTPForm,
       countDownSeconds: countDownSeconds ?? this.countDownSeconds,
+      emailOtp: emailOtp ?? this.emailOtp,
     );
   }
 
@@ -52,5 +56,6 @@ class AuthState extends Equatable {
         registerForm,
         sendOTPForm,
         countDownSeconds,
+        emailOtp,
       ];
 }

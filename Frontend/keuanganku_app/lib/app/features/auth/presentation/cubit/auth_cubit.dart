@@ -1,11 +1,9 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:keuanganku_app/app/core/usecase/usecase.dart';
 import 'package:keuanganku_app/app/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:keuanganku_app/app/features/auth/domain/usecases/register_usecase.dart';
@@ -52,7 +50,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   void _startTimer() async {
     emit(state.copyWith(countDownSeconds: 60));
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       final second = state.countDownSeconds - 1;
       if (second < 0) {
         _timer.cancel();
@@ -62,8 +60,13 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
+  void _setEmailOtp(String value) {
+    emit(state.copyWith(emailOtp: value));
+  }
+
   void registerEmailChanged(String value) {
     final email = Email.dirty(value);
+    _setEmailOtp(value);
     emit(state.copyWith(
       registerForm: state.registerForm.copyWith(
         email: email,
