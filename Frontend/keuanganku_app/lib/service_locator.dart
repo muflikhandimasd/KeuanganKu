@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:keuanganku_app/app/core/api_handler/api_handler.dart';
@@ -19,6 +20,7 @@ import 'app/features/auth/domain/usecases/send_otp_usecase.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  await dotenv.load(fileName: ".env");
   // Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
   sl.registerLazySingleton<FlutterSecureStorage>(() =>
