@@ -11,11 +11,25 @@ class RegisterForm with FormzMixin {
   final Name name;
   final Phone phone;
 
-  RegisterForm(
+  const RegisterForm(
       {this.email = const Email.pure(),
       this.address = const Address.pure(),
       this.name = const Name.pure(),
       this.phone = const Phone.pure()});
+
+  RegisterForm copyWith({
+    Email? email,
+    Address? address,
+    Name? name,
+    Phone? phone,
+  }) {
+    return RegisterForm(
+      email: email ?? this.email,
+      address: address ?? this.address,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+    );
+  }
 
   @override
   List<FormzInput> get inputs => [

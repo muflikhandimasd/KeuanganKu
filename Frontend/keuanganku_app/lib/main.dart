@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:keuanganku_app/app/features/auth/presentation/pages/register_page.dart';
+import 'package:keuanganku_app/app/features/auth/presentation/pages/send_otp_page.dart';
+import './service_locator.dart' as di;
+import 'app/features/auth/presentation/cubit/auth_cubit.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await di.init();
   runApp(const MyApp());
 }
 
@@ -14,8 +19,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [],
-      child: MyAppView(),
+      providers: [
+        BlocProvider<AuthCubit>(
+          create: (context) => di.sl<AuthCubit>()..checkLogin(),
+        ),
+      ],
+      child: const MyAppView(),
     );
   }
 }
@@ -25,11 +34,29 @@ class MyAppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FlutterNativeSplash.remove();
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Montserrat',
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (_, state) {
+        return MaterialApp(
+          theme: ThemeData(
+            fontFamily: 'Montserrat',
+          ),
+          debugShowCheckedModeBanner: false,
+          home: _getHomeWidget(state),
+        );
+      },
+    );
+  }
+}
+
+Widget _getHomeWidget(AuthState state) {
+  FlutterNativeSplash.remove();
+  if (state.isAuthenticated) {
+    return const Scaffold(
+      body: Center(
+        child: Text('Authenticated'),
       ),
     );
+  } else {
+    return const SendOtpPage();
   }
 }

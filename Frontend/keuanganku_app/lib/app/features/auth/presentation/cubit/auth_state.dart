@@ -8,11 +8,49 @@ class AuthState extends Equatable {
   final User? user;
   final String message;
   final RegisterForm registerForm;
-  const AuthState({
-    
+  final SendOTPForm sendOTPForm;
+  final int countDownSeconds;
 
+  bool get isAuthenticated => authStatus == AuthStatus.authenticated;
+
+  const AuthState({
+    this.authStatus = AuthStatus.unauthenticated,
+    this.formStatus = FormzSubmissionStatus.initial,
+    this.user,
+    this.message = '',
+    this.registerForm = const RegisterForm(),
+    this.sendOTPForm = const SendOTPForm(),
+    this.countDownSeconds = 60,
   });
 
+  AuthState copyWith({
+    AuthStatus? authStatus,
+    FormzSubmissionStatus? formStatus,
+    User? user,
+    String? message,
+    RegisterForm? registerForm,
+    SendOTPForm? sendOTPForm,
+    int? countDownSeconds,
+  }) {
+    return AuthState(
+      authStatus: authStatus ?? this.authStatus,
+      formStatus: formStatus ?? this.formStatus,
+      user: user ?? this.user,
+      message: message ?? this.message,
+      registerForm: registerForm ?? this.registerForm,
+      sendOTPForm: sendOTPForm ?? this.sendOTPForm,
+      countDownSeconds: countDownSeconds ?? this.countDownSeconds,
+    );
+  }
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [
+        authStatus,
+        formStatus,
+        user,
+        message,
+        registerForm,
+        sendOTPForm,
+        countDownSeconds,
+      ];
 }

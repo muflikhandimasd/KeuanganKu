@@ -10,11 +10,10 @@ import 'package:keuanganku_app/app/features/auth/data/datasources/auth_remote_da
 
 import 'package:keuanganku_app/app/features/auth/domain/entities/user.dart';
 
-import 'package:keuanganku_app/app/features/auth/domain/usecases/login_usecase.dart';
-
 import 'package:keuanganku_app/app/features/auth/domain/usecases/register_usecase.dart';
 
 import 'package:keuanganku_app/app/features/auth/domain/usecases/send_otp_usecase.dart';
+import 'package:keuanganku_app/app/features/auth/domain/usecases/verify_otp_usecase.dart';
 
 import '../../domain/repositories/auth_repository.dart';
 
@@ -39,10 +38,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, User>> login(LoginUseCaseParams params) async {
+  Future<Either<Failure, User>> verifyOtp(VerifyOtpUseCaseParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final user = await remoteDataSource.login(params);
+        final user = await remoteDataSource.verifyOtp(params);
         await localDataSource.cacheUser(user);
         return Right(user);
       } on ServerException catch (e) {

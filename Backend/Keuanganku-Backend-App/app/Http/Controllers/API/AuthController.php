@@ -38,7 +38,14 @@ class AuthController extends Controller
         } else {
             $user->assignRole('user');
         }
-        return CommonFormatter::success('Success Register, Please Login', null);
+        $verificationCode = $this->generateOtp(request('email'));
+
+        # Return With OTP 
+        $mailSend = Mail::to(request('email'))->send(new OtpMail($verificationCode->otp));
+        if ($mailSend == null) {
+            return CommonFormatter::fail(400, 'Failed Send OTP');
+        }
+        return CommonFormatter::success('Success Send OTP to your email, please check your email', null);
     }
 
 
@@ -90,7 +97,7 @@ class AuthController extends Controller
 
 
 
-    public function login(Request $request)
+    public function verifyOtp(Request $request)
     {
         $validator = Validator::make(request()->all(), [
             'email' => 'required|email|exists:users,email',

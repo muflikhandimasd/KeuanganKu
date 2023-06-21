@@ -6,21 +6,21 @@ import 'package:keuanganku_app/app/features/auth/domain/entities/user.dart';
 
 import '../repositories/auth_repository.dart';
 
-class LoginUseCase extends UseCase<User, LoginUseCaseParams> {
+class VerifyOtpUseCase extends UseCase<User, VerifyOtpUseCaseParams> {
   final AuthRepository repository;
 
-  LoginUseCase({required this.repository});
+  VerifyOtpUseCase({required this.repository});
   @override
-  Future<Either<Failure, User>> call(LoginUseCaseParams params) async {
-    return await repository.login(params);
+  Future<Either<Failure, User>> call(VerifyOtpUseCaseParams params) async {
+    return await repository.verifyOtp(params);
   }
 }
 
-class LoginUseCaseParams extends Equatable {
+class VerifyOtpUseCaseParams extends Equatable {
   final String email;
   final String otp;
 
-  const LoginUseCaseParams({required this.email, required this.otp});
+  const VerifyOtpUseCaseParams({required this.email, required this.otp});
 
   Map<String, dynamic> toJson() => {
         'email': email,
