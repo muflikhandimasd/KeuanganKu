@@ -4,12 +4,12 @@ import 'package:keuanganku_app/app/core/failures/failure.dart';
 import 'package:keuanganku_app/app/core/usecase/usecase.dart';
 import '../repositories/auth_repository.dart';
 
-class SendOtpUseCase extends UseCase<bool, SendOtpUseCaseParams> {
+class SendOtpUseCase extends UseCase<void, SendOtpUseCaseParams> {
   final AuthRepository repository;
 
   SendOtpUseCase({required this.repository});
   @override
-  Future<Either<Failure, bool>> call(SendOtpUseCaseParams params) async {
+  Future<Either<Failure, void>> call(SendOtpUseCaseParams params) async {
     return await repository.sendOtp(params);
   }
 }

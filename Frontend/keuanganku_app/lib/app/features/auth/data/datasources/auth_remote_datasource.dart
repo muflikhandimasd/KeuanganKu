@@ -13,8 +13,8 @@ import '../models/user_model.dart';
 abstract class AuthRemoteDataSource {
   Future<bool> sendOtp(SendOtpUseCaseParams params);
   Future<UserModel> verifyOtp(VerifyOtpUseCaseParams params);
-  Future<bool> register(RegisterUseCaseParams params);
-  Future<bool> logout(NoParams params);
+  Future<void> register(RegisterUseCaseParams params);
+  Future<void> logout(NoParams params);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {

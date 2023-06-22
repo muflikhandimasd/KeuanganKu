@@ -16,8 +16,8 @@ class ApiHandler {
 
   ApiHandler(this._dio, this._storage) {
     _dio.options.baseUrl = ApiConfig.BASE_URL;
-    _dio.options.connectTimeout = const Duration(milliseconds: 5000);
-    _dio.options.receiveTimeout = const Duration(milliseconds: 3000);
+    _dio.options.connectTimeout = const Duration(seconds: 10);
+    _dio.options.receiveTimeout = const Duration(seconds: 10);
     _dio.options.headers['Content-Type'] = 'application/json';
     _dio.options.headers['Accept'] = 'application/json';
 

@@ -5,13 +5,13 @@ import 'package:keuanganku_app/app/core/usecase/usecase.dart';
 
 import '../repositories/auth_repository.dart';
 
-class RegisterUseCase extends UseCase<bool, RegisterUseCaseParams> {
+class RegisterUseCase extends UseCase<void, RegisterUseCaseParams> {
   final AuthRepository repository;
 
   RegisterUseCase({required this.repository});
 
   @override
-  Future<Either<Failure, bool>> call(RegisterUseCaseParams params) async {
+  Future<Either<Failure, void>> call(RegisterUseCaseParams params) async {
     return await repository.register(params);
   }
 }

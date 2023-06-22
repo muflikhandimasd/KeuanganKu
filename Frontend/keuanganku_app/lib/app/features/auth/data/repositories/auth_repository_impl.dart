@@ -45,9 +45,9 @@ class AuthRepositoryImpl implements AuthRepository {
         await localDataSource.cacheUser(user);
         return Right(user);
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.toString()));
+        return Left(ServerFailure(message: e.message));
       } on CacheException catch (e) {
-        return Left(CacheFailure(message: e.toString()));
+        return Left(CacheFailure(message: e.message));
       }
     } else {
       return Left(NoInternetFailure());
@@ -55,18 +55,18 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> logout(NoParams params) async {
+  Future<Either<Failure, void>> logout(NoParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final status = await remoteDataSource.logout(params);
+        await remoteDataSource.logout(params);
         await localDataSource.clearUser();
         await localDataSource.clearToken();
 
-        return Right(status);
+        return const Right(null);
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.toString()));
+        return Left(ServerFailure(message: e.message));
       } on CacheException catch (e) {
-        return Left(CacheFailure(message: e.toString()));
+        return Left(CacheFailure(message: e.message));
       }
     } else {
       return Left(NoInternetFailure());
@@ -74,15 +74,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> register(RegisterUseCaseParams params) async {
+  Future<Either<Failure, void>> register(RegisterUseCaseParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final status = await remoteDataSource.register(params);
-        return Right(status);
+        await remoteDataSource.register(params);
+        return const Right(null);
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.toString()));
+        return Left(ServerFailure(message: e.message));
       } on CacheException catch (e) {
-        return Left(CacheFailure(message: e.toString()));
+        return Left(CacheFailure(message: e.message));
       }
     } else {
       return Left(NoInternetFailure());
@@ -90,15 +90,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> sendOtp(SendOtpUseCaseParams params) async {
+  Future<Either<Failure, void>> sendOtp(SendOtpUseCaseParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final status = await remoteDataSource.sendOtp(params);
-        return Right(status);
+        await remoteDataSource.sendOtp(params);
+        return const Right(null);
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.toString()));
+        return Left(ServerFailure(message: e.message));
       } on CacheException catch (e) {
-        return Left(CacheFailure(message: e.toString()));
+        return Left(CacheFailure(message: e.message));
       }
     } else {
       return Left(NoInternetFailure());

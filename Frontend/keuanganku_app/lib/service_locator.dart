@@ -9,6 +9,8 @@ import 'package:keuanganku_app/app/features/auth/domain/repositories/auth_reposi
 import 'package:keuanganku_app/app/features/auth/domain/usecases/check_login_usecase.dart';
 import 'package:keuanganku_app/app/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:keuanganku_app/app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:keuanganku_app/app/features/global/presentation/cubit/internet_cubit/internet_cubit.dart';
+import 'package:keuanganku_app/app/features/main/presentation/cubit/main_cubit.dart';
 
 import 'app/core/network_info/network_info.dart';
 import 'app/features/auth/data/datasources/auth_local_datasource.dart';
@@ -59,4 +61,7 @@ Future<void> init() async {
       checkLoginUseCase: sl(),
       logoutUseCase: sl(),
       registerUseCase: sl()));
+
+  sl.registerFactory<InternetCubit>(() => InternetCubit(sl()));
+  sl.registerFactory<MainCubit>(() => MainCubit());
 }

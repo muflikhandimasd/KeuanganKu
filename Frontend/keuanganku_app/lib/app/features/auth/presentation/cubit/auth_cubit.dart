@@ -1,12 +1,15 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:keuanganku_app/app/core/usecase/usecase.dart';
 import 'package:keuanganku_app/app/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:keuanganku_app/app/features/auth/domain/usecases/register_usecase.dart';
+import 'package:keuanganku_app/app/features/auth/presentation/form/verify_otp_form/models/otp.dart';
 
 import '../../domain/entities/user.dart';
 import 'package:formz/formz.dart';
@@ -19,6 +22,7 @@ import '../form/register_form/models/name.dart';
 import '../form/register_form/models/phone.dart';
 import '../form/register_form/register_form.dart';
 import '../form/send_otp_form/send_otp_form.dart';
+import '../form/verify_otp_form/verify_otp_form.dart';
 
 part 'auth_state.dart';
 
@@ -62,6 +66,24 @@ class AuthCubit extends Cubit<AuthState> {
 
   void _setEmailOtp(String value) {
     emit(state.copyWith(emailOtp: value));
+  }
+
+  void verifyOtpEmailChanged(String value) {
+    final email = Email.dirty(value);
+    emit(state.copyWith(
+        verifyOTPForm: state.verifyOTPForm
+            .copyWith(email: email, otp: state.verifyOTPForm.otp)));
+  }
+
+  void verifyOtpOtpChanged(String value) {
+    final otp = Otp.dirty(value);
+    emit(state.copyWith(
+        verifyOTPForm: state.verifyOTPForm
+            .copyWith(email: state.verifyOTPForm.email, otp: otp)));
+  }
+
+  void _changeRequestType(RequestType requestType) {
+    emit(state.copyWith(requestType: requestType));
   }
 
   void registerEmailChanged(String value) {
@@ -152,7 +174,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void sendOTPSubmitted() async {
-    if (state.sendOTPForm.isValid) {
+    _changeRequestType(RequestType.sendOtp);
+    if (state.sendOTPForm.email.isValid) {
       emit(state.copyWith(formStatus: FormzSubmissionStatus.inProgress));
       final result = await sendOtpUseCase(SendOtpUseCaseParams(
         email: state.sendOTPForm.email.value,
@@ -162,7 +185,9 @@ class AuthCubit extends Cubit<AuthState> {
           formStatus: FormzSubmissionStatus.failure,
           message: f.message,
         ));
-      }, (isSuccessSendOTP) {
+      }, (isSuccessSendOtp) {
+        _startTimer();
+        _setEmailOtp(state.sendOTPForm.email.value);
         _resetSendOTPForm();
         emit(state.copyWith(
           formStatus: FormzSubmissionStatus.success,
@@ -183,6 +208,9 @@ class AuthCubit extends Cubit<AuthState> {
       return;
     }, (user) {
       if (user != null) {
+        if (kDebugMode) {
+          log(user.token);
+        }
         emit(state.copyWith(
           authStatus: AuthStatus.authenticated,
           user: user,
@@ -190,6 +218,33 @@ class AuthCubit extends Cubit<AuthState> {
       } else {
         return;
       }
+    });
+  }
+
+  _resetVerifyOTPForm() {
+    emit(state.copyWith(
+      verifyOTPForm: const VerifyOTPForm(),
+    ));
+  }
+
+  void verifyOtpSubmitted() async {
+    emit(state.copyWith(formStatus: FormzSubmissionStatus.inProgress));
+    final result = await verifyOtpUseCase(VerifyOtpUseCaseParams(
+      email: state.verifyOTPForm.email.value,
+      otp: state.verifyOTPForm.otp.value,
+    ));
+    result.fold((f) {
+      emit(state.copyWith(
+        formStatus: FormzSubmissionStatus.failure,
+        message: f.message,
+      ));
+    }, (user) {
+      _resetVerifyOTPForm();
+      emit(state.copyWith(
+        formStatus: FormzSubmissionStatus.success,
+        user: user,
+        authStatus: AuthStatus.authenticated,
+      ));
     });
   }
 }

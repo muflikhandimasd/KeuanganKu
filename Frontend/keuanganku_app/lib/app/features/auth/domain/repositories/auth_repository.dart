@@ -8,9 +8,9 @@ import 'package:keuanganku_app/app/features/auth/domain/usecases/register_usecas
 import '../usecases/send_otp_usecase.dart';
 
 abstract class AuthRepository {
-  Future<Either<Failure, bool>> sendOtp(SendOtpUseCaseParams params);
+  Future<Either<Failure, void>> sendOtp(SendOtpUseCaseParams params);
   Future<Either<Failure, User>> verifyOtp(VerifyOtpUseCaseParams params);
-  Future<Either<Failure, bool>> register(RegisterUseCaseParams params);
-  Future<Either<Failure, bool>> logout(NoParams params);
+  Future<Either<Failure, void>> register(RegisterUseCaseParams params);
+  Future<Either<Failure, void>> logout(NoParams params);
   Future<Either<Failure, User?>> checkLogin(NoParams params);
 }

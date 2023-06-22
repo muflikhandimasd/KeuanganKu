@@ -10,4 +10,5 @@ class ApiConfig {
   static const String REGISTER = "/register";
   static const String SEND_OTP = "/send-otp";
   static const String LOGOUT = "/logout";
+  static const String ACCOUNT = "/accounts";
 }
