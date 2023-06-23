@@ -43,6 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
       try {
         final user = await remoteDataSource.verifyOtp(params);
         await localDataSource.cacheUser(user);
+        await localDataSource.cacheToken(user.token);
         return Right(user);
       } on ServerException catch (e) {
         return Left(ServerFailure(message: e.message));

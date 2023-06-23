@@ -1,24 +1,22 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:keuanganku_app/app/core/api_handler/api_handler.dart';
 import 'package:keuanganku_app/app/core/config/api_config.dart';
 import 'package:keuanganku_app/app/core/exceptions/exception.dart';
 import 'package:keuanganku_app/app/core/usecase/usecase.dart';
-import 'package:keuanganku_app/app/features/home/domain/usecases/update_account_usecase.dart';
+import 'package:keuanganku_app/app/features/home/domain/usecases/account/update_account_usecase.dart';
 
 import '../models/account_model.dart';
 
-abstract class HomeRemoteDataSource {
+abstract class AccountRemoteDataSource {
   Future<List<AccountModel>> getAccounts(NoParams params);
   Future<void> createAccount(String name);
   Future<void> updateAccount(UpdateAccountUseCaseParams params);
   Future<void> deleteAccount(int id);
 }
 
-class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
+class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   final ApiHandler api;
-  HomeRemoteDataSourceImpl(this.api);
+  AccountRemoteDataSourceImpl(this.api);
   @override
   Future<void> createAccount(String name) async {
     try {

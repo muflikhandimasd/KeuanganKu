@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:keuanganku_app/app/core/failures/failure.dart';
 import 'package:keuanganku_app/app/core/usecase/usecase.dart';
 
-import '../repositories/home_repository.dart';
+import '../../repositories/account_repository.dart';
 
 class UpdateAccountUseCase extends UseCase<void, UpdateAccountUseCaseParams> {
-  final HomeRepository repository;
+  final AccountRepository repository;
 
   UpdateAccountUseCase(this.repository);
   @override

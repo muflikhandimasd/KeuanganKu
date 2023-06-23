@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:keuanganku_app/app/features/auth/presentation/pages/send_otp_page.dart';
 import 'package:keuanganku_app/app/features/global/presentation/cubit/internet_cubit/internet_cubit.dart';
+import 'package:keuanganku_app/app/features/home/presentation/cubit/account_cubit/account_cubit.dart';
 import 'package:keuanganku_app/app/features/main/presentation/cubit/main_cubit.dart';
 import 'package:keuanganku_app/app/features/main/presentation/pages/main_page.dart';
 import './service_locator.dart' as di;
@@ -15,6 +16,7 @@ import 'app/features/auth/presentation/cubit/auth_cubit.dart';
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await di.init();
   Bloc.observer = GlobalObserver();
 
@@ -36,6 +38,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<MainCubit>(
           create: (context) => di.sl<MainCubit>(),
+        ),
+        BlocProvider<AccountCubit>(
+          create: (context) => di.sl<AccountCubit>()..getAccounts(),
         ),
       ],
       child: const MyAppView(),

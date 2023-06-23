@@ -82,7 +82,7 @@ class AuthCubit extends Cubit<AuthState> {
             .copyWith(email: state.verifyOTPForm.email, otp: otp)));
   }
 
-  void _changeRequestType(RequestType requestType) {
+  void changeRequestType(RequestType requestType) {
     emit(state.copyWith(requestType: requestType));
   }
 
@@ -174,7 +174,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void sendOTPSubmitted() async {
-    _changeRequestType(RequestType.sendOtp);
+    changeRequestType(RequestType.sendOtp);
     if (state.sendOTPForm.email.isValid) {
       emit(state.copyWith(formStatus: FormzSubmissionStatus.inProgress));
       final result = await sendOtpUseCase(SendOtpUseCaseParams(
@@ -225,6 +225,22 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(
       verifyOTPForm: const VerifyOTPForm(),
     ));
+  }
+
+  void logout() async {
+    emit(state.copyWith(formStatus: FormzSubmissionStatus.inProgress));
+    final result = await logoutUseCase(const NoParams());
+    result.fold((f) {
+      emit(state.copyWith(
+        formStatus: FormzSubmissionStatus.failure,
+        message: f.message,
+      ));
+    }, (_) {
+      emit(state.copyWith(
+        formStatus: FormzSubmissionStatus.success,
+        authStatus: AuthStatus.unauthenticated,
+      ));
+    });
   }
 
   void verifyOtpSubmitted() async {

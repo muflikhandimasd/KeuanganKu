@@ -27,6 +27,7 @@ class ApiHandler {
           options.headers['Authorization'] = 'Bearer $_token';
         }
         if (kDebugMode) {
+          log('Token: $_token');
           log('Request: ${options.method} ${options.uri}');
           log('Headers: ${options.headers}');
           log('Data: ${options.data}');

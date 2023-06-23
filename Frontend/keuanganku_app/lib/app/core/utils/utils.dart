@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
   Utils._();
@@ -67,5 +68,14 @@ class Utils {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  static String formatStringDate(String date) {
+    return DateFormat('dd-MM-yyyy').format(DateTime.parse(date));
+  }
+
+  static String formatStringCurrency(String currency) {
+    return NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 0)
+        .format(int.parse(currency));
   }
 }
